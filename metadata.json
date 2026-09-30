@@ -1,0 +1,8 @@
+{
+  "name": "Undangan Pernikahan Asep & Siva",
+  "description": "Undangan pernikahan digital modern, elegan, dan premium dengan tema watercolor, air terjun, pegunungan, dan floral garden.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
