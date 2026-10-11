@@ -139,7 +139,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
               transition={{ duration: 1, delay: 1.5 }}
               className="mt-4 bg-[#0B182B]/75 backdrop-blur-md rounded-2xl p-3.5 border border-[#405775]/60 max-w-xs mx-auto shadow-xl"
             >
-              <p className="text-[10px] text-[#9AAEC4] uppercase tracking-wider font-sans-clean mb-0.5">
+              <p className="text-[10px] text-[#9AAEC4] tracking-wider font-sans-clean mb-0.5">
                 Kepada Yth. Bapak/Ibu/Saudara/i:
               </p>
               <p className="font-serif-title text-base text-[#FFFFFF] font-semibold capitalize">
