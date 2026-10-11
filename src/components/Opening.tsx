@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Sparkles, Volume2 } from 'lucide-react';
 import { weddingData } from '../data/wedding';
@@ -9,7 +9,27 @@ interface OpeningProps {
   onOpenInvitation: () => void;
 }
 
-export const Opening: React.FC<OpeningProps> = ({ guestName, onOpenInvitation }) => {
+export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, onOpenInvitation }) => {
+  const [displayGuestName, setDisplayGuestName] = useState<string>('');
+
+  useEffect(() => {
+    // 1. Jika ada prop guestName yang dikirim, gunakan itu
+    if (initialGuestName) {
+      setDisplayGuestName(initialGuestName);
+      return;
+    }
+
+    // 2. Jika tidak ada, baca otomatis dari URL parameter ?to=NamaTamu
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to');
+    if (to) {
+      setDisplayGuestName(to);
+    } else {
+      // Default jika URL tidak memiliki ?to=
+      setDisplayGuestName('Tamu Undangan');
+    }
+  }, [initialGuestName]);
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -115,22 +135,20 @@ export const Opening: React.FC<OpeningProps> = ({ guestName, onOpenInvitation })
               </p>
             </motion.div>
 
-            {/* Guest Personalization if provided */}
-            {guestName && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1.5 }}
-                className="mt-4 bg-[#0B182B]/75 backdrop-blur-md rounded-2xl p-3.5 border border-[#405775]/60 max-w-xs mx-auto shadow-xl"
-              >
-                <p className="text-[10px] text-[#9AAEC4] uppercase tracking-wider font-sans-clean mb-0.5">
-                  Kepada Yth. Bapak/Ibu/Saudara/i:
-                </p>
-                <p className="font-serif-title text-base text-[#FFFFFF] font-semibold capitalize">
-                  {guestName}
-                </p>
-              </motion.div>
-            )}
+            {/* Tampilan Nama Tamu (Selalu Muncul) */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.5 }}
+              className="mt-4 bg-[#0B182B]/75 backdrop-blur-md rounded-2xl p-3.5 border border-[#405775]/60 max-w-xs mx-auto shadow-xl"
+            >
+              <p className="text-[10px] text-[#9AAEC4] uppercase tracking-wider font-sans-clean mb-0.5">
+                Kepada Yth. Bapak/Ibu/Saudara/i:
+              </p>
+              <p className="font-serif-title text-base text-[#FFFFFF] font-semibold capitalize">
+                {displayGuestName}
+              </p>
+            </motion.div>
           </div>
 
           {/* Bottom Open Button */}
@@ -142,7 +160,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName, onOpenInvitation })
           >
             <button
               onClick={onOpenInvitation}
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#14253D]/90 backdrop-blur-md border border-[#9AAEC4]/60 text-[#F5F1E8] text-xs md:text-sm tracking-widest font-sans-clean font-semibold uppercase shadow-2xl hover:bg-[#243B5A] hover:border-[#C7A76C] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
+              className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#14253D]/90 backdrop-blur-md border border-[#9AAEC4]/60 text-[#F5F1E8] text-xs md:text-sm tracking-widest font-sans-clean font-semibold uppercase shadow-2xl hover:bg-[#243B5A] hover:border-[#C7A76C] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer"
             >
               <Mail className="w-4 h-4 text-[#C7A76C] group-hover:rotate-12 transition-transform duration-300" />
               <span>Buka Undangan</span>
