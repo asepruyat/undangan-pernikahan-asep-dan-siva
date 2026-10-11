@@ -10,23 +10,25 @@ interface OpeningProps {
 }
 
 export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, onOpenInvitation }) => {
-  const [displayGuestName, setDisplayGuestName] = useState<string>('');
+  const [displayGuestName, setDisplayGuestName] = useState<string>('Tamu Undangan');
 
   useEffect(() => {
-    // 1. Jika ada prop guestName yang dikirim, gunakan itu
+    // 1. Jika ada prop guestName dari App.tsx
     if (initialGuestName) {
       setDisplayGuestName(initialGuestName);
       return;
     }
 
-    // 2. Jika tidak ada, baca otomatis dari URL parameter ?to=NamaTamu
+    // 2. Membaca parameter URL (?to=Nama Tamu)
     const params = new URLSearchParams(window.location.search);
-    const to = params.get('to');
-    if (to) {
-      setDisplayGuestName(to);
-    } else {
-      // Default jika URL tidak memiliki ?to=
-      setDisplayGuestName('Tamu Undangan');
+    const rawTo = params.get('to');
+
+    if (rawTo) {
+      // Decode URI component & bersihkan spasi ekstra agar nama tampil rapi
+      const decodedName = decodeURIComponent(rawTo).replace(/\+/g, ' ').trim();
+      if (decodedName.length > 0) {
+        setDisplayGuestName(decodedName);
+      }
     }
   }, [initialGuestName]);
 
@@ -36,22 +38,21 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
       exit={{ opacity: 0, transition: { duration: 1.2, ease: 'easeInOut' } }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B182B] overflow-hidden select-none"
     >
-      {/* 9:16 Portrait Card Container Frame (Max-width 600px on desktop) */}
+      {/* Container Frame 9:16 */}
       <div className="relative w-full h-full max-w-[540px] max-h-[920px] aspect-[9/16] mx-auto overflow-hidden shadow-2xl rounded-none md:rounded-3xl border-0 md:border-2 border-[#405775]/50 bg-[#0B182B]">
         
-        {/* Deep Navy Watercolor Background Image */}
+        {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-1000" 
           style={{ backgroundImage: `url(${bgAsset})` }}
         >
-          {/* Subtle vignette dark navy gradient for high legibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#0B182B]/60 via-[#14253D]/30 to-[#0B182B]/80" />
         </div>
 
-        {/* Animated Mist / Fog */}
+        {/* Animated Mist */}
         <div className="absolute inset-0 pointer-events-none opacity-50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent animate-mist" />
 
-        {/* Animated Floating Doves / White Birds */}
+        {/* Floating Doves / White Birds */}
         <div className="absolute top-[22%] left-[12%] animate-bird opacity-85 pointer-events-none">
           <svg width="22" height="18" viewBox="0 0 24 24" fill="#F5F1E8" className="filter drop-shadow-md">
             <path d="M12,2 C10,6 6,8 2,8 C6,10 8,14 10,18 C11,14 14,10 22,8 C16,8 14,5 12,2 Z" />
@@ -63,7 +64,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
           </svg>
         </div>
 
-        {/* Framing Watercolor Hanging Wisteria / Floral Top Overlay */}
+        {/* Hanging Wisteria Top Overlay */}
         <div className="absolute top-0 inset-x-0 pointer-events-none h-48 bg-gradient-to-b from-[#0B182B]/70 via-transparent to-transparent flex justify-between items-start px-2 z-10">
           <svg className="w-36 h-36 opacity-85 filter drop-shadow-sm" viewBox="0 0 100 100" fill="none">
             <path d="M0 0 Q 30 20 50 60 Q 40 30 0 0 Z" fill="#9AAEC4" />
@@ -79,10 +80,10 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
           </svg>
         </div>
 
-        {/* Content Container Centered */}
+        {/* Content Container */}
         <div className="relative z-20 h-full flex flex-col justify-between items-center text-center px-6 py-10 text-white">
           
-          {/* Top Eyebrow Header */}
+          {/* Eyebrow Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -94,7 +95,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
             </span>
           </motion.div>
 
-          {/* Center Main Calligraphy & Names */}
+          {/* Main Calligraphy & Names */}
           <div className="my-auto space-y-4 py-4 w-full">
             <motion.p
               initial={{ opacity: 0, y: 15 }}
@@ -105,7 +106,6 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
               The Wedding of
             </motion.p>
 
-            {/* Couple Names Handwriting/Calligraphy */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -135,7 +135,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
               </p>
             </motion.div>
 
-            {/* Tampilan Nama Tamu (Selalu Muncul) */}
+            {/* Box Nama Tamu (Kepada Yth.) */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -151,7 +151,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
             </motion.div>
           </div>
 
-          {/* Bottom Open Button */}
+          {/* Button Buka Undangan */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
