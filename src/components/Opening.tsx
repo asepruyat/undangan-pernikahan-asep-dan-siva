@@ -13,18 +13,15 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
   const [displayGuestName, setDisplayGuestName] = useState<string>('Tamu Undangan');
 
   useEffect(() => {
-    // 1. Jika ada prop guestName dari App.tsx
     if (initialGuestName) {
       setDisplayGuestName(initialGuestName);
       return;
     }
 
-    // 2. Membaca parameter URL (?to=Nama Tamu)
     const params = new URLSearchParams(window.location.search);
     const rawTo = params.get('to');
 
     if (rawTo) {
-      // Decode URI component & bersihkan spasi ekstra agar nama tampil rapi
       const decodedName = decodeURIComponent(rawTo).replace(/\+/g, ' ').trim();
       if (decodedName.length > 0) {
         setDisplayGuestName(decodedName);
@@ -151,7 +148,7 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
             </motion.div>
           </div>
 
-          {/* Button Buka Undangan */}
+          {/* Button Buka Undangan & Disclaimer Gelar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +164,12 @@ export const Opening: React.FC<OpeningProps> = ({ guestName: initialGuestName, o
               <Sparkles className="w-3.5 h-3.5 text-[#C7A76C] animate-pulse" />
             </button>
 
-            <p className="text-[10px] text-[#F5F1E8]/70 mt-2.5 flex items-center gap-1 font-sans-clean">
+            {/* Catatan mohon maaf penulisan nama/gelar */}
+            <p className="text-[10px] sm:text-xs text-[#F5F1E8]/75 mt-3 italic font-sans-clean">
+              *Mohon maaf jika terdapat kesalahan dalam penulisan nama / gelar.
+            </p>
+
+            <p className="text-[10px] text-[#F5F1E8]/60 mt-2 flex items-center gap-1 font-sans-clean">
               <Volume2 className="w-3 h-3 text-[#9AAEC4]" /> Musik akan otomatis dimainkan
             </p>
           </motion.div>
